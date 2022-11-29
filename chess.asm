@@ -1,4 +1,4 @@
-.model small
+.model Small
 .stack 64
 .data
 Filename db 'T13.bin', 0h;

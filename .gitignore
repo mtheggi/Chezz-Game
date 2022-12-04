@@ -1,2 +1,4 @@
 *.OBJ
 *.EXE
+*.MAP
+*.TD

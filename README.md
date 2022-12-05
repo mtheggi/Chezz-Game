@@ -1,26 +1,28 @@
 # Micro1
 some pieces added in their all versions ; 
 
-bgrnd --> background 
-bwb --> brown[bgrnd] white beshop 
-wwb--> white white beshop 
-bbb --> brown bgrnd black beshop 
-wbb --> white bgrnd black beshop
- 
-bbr -> brown bgrnd black rook  
-bwr ->  ..   ,,    white rook 
-wbr -> white bgrnd black rook 
-wwr--> white bgrnd white rook 
-knights 
+bgrnd --> background <br />
+bwb --> brown[bgrnd] white beshop <br />
+wwb--> white white beshop <br /> 
+bbb --> brown bgrnd black beshop <br />
+wbb --> white bgrnd black beshop <br />
+ <br />
+bbr -> brown bgrnd black rook  <br />
+bwr ->  ..   ,,    white rook  <br />
+wbr -> white bgrnd black rook <br />
+wwr--> white bgrnd white rook <br />
+knights <br />
+<br />
+bbk  <br />
+bwk <br />
+wbk <br />
+wwk <br /> 
 
-bbk  
-bwk 
-wbk
-wwk
-
+<br />
 --------
-in BINS 
-
-browns and white bgrnd  
-WS --> white square 
-Bs--> white Square
+<br />
+in BINS <br />
+<br />
+browns and white bgrnd  <br />
+WS --> white square <br />
+Bs--> white Square <br />

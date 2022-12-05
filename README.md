@@ -11,12 +11,12 @@ bbr -> brown bgrnd black rook  <br />
 bwr ->  ..   ,,    white rook  <br />
 wbr -> white bgrnd black rook <br />
 wwr--> white bgrnd white rook <br />
-knights <br />
+Pawn<br />
 <br />
-bbk  <br />
-bwk <br />
-wbk <br />
-wwk <br /> 
+bbp  <br />
+bwp <br />
+wbp <br />
+wwp <br /> 
 
 <br />
 --------

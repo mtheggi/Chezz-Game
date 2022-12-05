@@ -1,10 +1,10 @@
 .model Small
 .stack 64
 .data
-Filename db 'Brown.bin', 0h;
+Filename db 'WS.bin', 0h;
 DIRECTORY       DB      'D:\BINs',0h
 filehandle dw ?
-chessData db  40000d dup(?);
+chessData db  625d dup(?);
 .code
 main PROC far
 mov ax , @data ;
@@ -32,11 +32,11 @@ mov al ,[Bx] ;
 int 10h;
 inc cx;
 inc bx;
-cmp cx , 0f8h;
+cmp cx , 49h;
 JNE drawingloop ;
 mov cx , 30H ;
 inc dx ;
-cmp dx, 200d;
+cmp dx, 19h;
 JNE drawingloop;
 
 mov ah , 0h ;
@@ -67,7 +67,7 @@ OpenFile ENDP ;
 ReadData proc
 mov ah , 3fh ;
 mov bx , [filehandle];
-mov cx , 40000d;
+mov cx , 625d;
 LEA dx ,chessData;
 int 21h;
 ;mov ah , 3fh;

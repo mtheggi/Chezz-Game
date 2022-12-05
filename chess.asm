@@ -1,13 +1,18 @@
 .model Small
 .stack 64
 .data
-Filename db 'T13.bin', 0h;
+Filename db 'Brown.bin', 0h;
+DIRECTORY       DB      'D:\test',0h
 filehandle dw ?
 chessData db  9C40h dup(?);
 .code
 main PROC far
 mov ax , @data ;
 mov ds , ax ;
+
+MOV AH, 3BH
+MOV DX, OFFSET DIRECTORY
+INT 21H
 
 mov ah,0;
 mov al,13h;

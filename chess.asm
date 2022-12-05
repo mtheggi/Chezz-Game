@@ -2,9 +2,9 @@
 .stack 64
 .data
 Filename db 'Brown.bin', 0h;
-DIRECTORY       DB      'D:\test',0h
+DIRECTORY       DB      'D:\BINs',0h
 filehandle dw ?
-chessData db  9C40h dup(?);
+chessData db  40000d dup(?);
 .code
 main PROC far
 mov ax , @data ;
@@ -32,11 +32,11 @@ mov al ,[Bx] ;
 int 10h;
 inc cx;
 inc bx;
-cmp cx ,0F8h;
+cmp cx , 0f8h;
 JNE drawingloop ;
-mov cx , 30h ;
+mov cx , 30H ;
 inc dx ;
-cmp dx, 0c8h;
+cmp dx, 200d;
 JNE drawingloop;
 
 mov ah , 0h ;
@@ -67,7 +67,7 @@ OpenFile ENDP ;
 ReadData proc
 mov ah , 3fh ;
 mov bx , [filehandle];
-mov cx , 9C40h;
+mov cx , 40000d;
 LEA dx ,chessData;
 int 21h;
 ;mov ah , 3fh;

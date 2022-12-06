@@ -2,3 +2,4 @@
 *.EXE
 *.MAP
 *.TD
+../Pieces/*.bin.bak

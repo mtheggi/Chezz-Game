@@ -1,10 +1,11 @@
 .model Small
 .stack 64
 .data
-Filename db 'bbq.bin', 0h;
-DIRECTORY       DB      'D:\Pieces',0h
+Filename db 'Brown.bin', 0h;
+DIRECTORY       DB      'D:\BINs',0h
 filehandle dw ?
 chessData db  625d dup(?);
+pieceData db
 .code
 main PROC far
 mov ax , @data ;

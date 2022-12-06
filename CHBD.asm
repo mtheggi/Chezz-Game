@@ -1,8 +1,8 @@
 .model Small
 .stack 64
 .data
-Filename db 'CHBD.bin', 0h;
-DIRECTORY       DB      'D:\msa',0h
+Filename db 'WS.bin', 0h;
+DIRECTORY       DB      'D:\BINs',0h
 filehandle dw ?
 chessData db  40000d dup(?);
 .code

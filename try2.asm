@@ -15,6 +15,10 @@ main PROC far
 mov ax , @data ;
 mov ds , ax ;
 
+mov ah,0;
+mov al,13h;
+int 10h;
+
 call Drawboard
 ;--------------------------input data------------------------------------
 mov ax,'bb'
@@ -38,10 +42,6 @@ mov Filename+7,ah
 MOV AH, 3BH
 MOV DX, OFFSET DIRECTORY
 INT 21H
-
-mov ah,0;
-mov al,13h;
-int 10h;
 
 call OpenFile;
 call ReadData;
@@ -72,8 +72,8 @@ call closeFile ;
 ;;mov al , 3h ;
 ;int 10h ;
 
-;mov ah , 4ch ;
-;int 21h;
+mov ah , 4ch ;
+int 21h;
 hlt
 main ENDP
 OpenFile proc

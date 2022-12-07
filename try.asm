@@ -19,10 +19,6 @@ MOV AH, 3BH
 MOV DX, OFFSET DIRECTORY
 INT 21H
 
-mov ah,0;
-mov al,13h;
-int 10h;
-
 call OpenFile;
 call ReadData;
 

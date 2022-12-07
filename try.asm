@@ -1,16 +1,17 @@
-;extern Filename:byte
-public callpiece
-
+public Drawboard
+extern Filename:byte
 .model Small
 .stack 64
 .data
 
-Filename db 'bbk.bin', 0h;
+
+
 DIRECTORY       DB      'D:\Pieces',0h
+;Pieces          DB   
 filehandle dw ?
-chessData db  625d dup(?);
+chessData db  9C40h dup(?);
 .code
-callpiece PROC far
+Drawboard PROC far
 mov ax , @data ;
 mov ds , ax ;
 
@@ -27,7 +28,7 @@ call ReadData;
 
 LEA bx , chessData
 mov cx , 30h ;
-mov dx , 0h ;
+mov dx , 0c8h ;
 mov ah ,0ch ;
 
 
@@ -36,11 +37,11 @@ mov al ,[Bx] ;
 int 10h;
 inc cx;
 inc bx;
-cmp cx , 49h;
+cmp cx , 0f8h;
 JNE drawingloop ;
 mov cx , 30H ;
-inc dx ;
-cmp dx, 19h;
+dec dx ;
+cmp dx, 0h;
 JNE drawingloop;
 
 mov ah , 0h ;
@@ -48,16 +49,14 @@ int 16h ;
 
 call closeFile ;
 ;mov ah , 0h ;
-;;mov al , 3h ;
+;mov al , 3h ;
 ;int 10h ;
 
-;mov ah , 4ch ;
-;int 21h;
 
 
-;hlt
+
 ret
-callpiece ENDP
+Drawboard ENDP
 
 OpenFile proc
 mov ah , 3dh ;
@@ -72,7 +71,7 @@ OpenFile ENDP ;
 ReadData proc
 mov ah , 3fh ;
 mov bx , [filehandle];
-mov cx , 625d;
+mov cx , 9C40h;
 LEA dx ,chessData;
 int 21h;
 ;mov ah , 3fh;
@@ -87,5 +86,4 @@ int 21h;
 RET ;
 closeFile ENDP;
 End 
-
 

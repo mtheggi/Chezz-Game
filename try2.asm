@@ -1,19 +1,40 @@
-;extern Filename:byte
-public callpiece
-
+extern callpiece:far
+extern Drawboard:far
+public Filename
 .model Small
 .stack 64
 .data
-
-Filename db 'bbk.bin', 0h;
+;Filename db 'bbk.bin', 0h;
 DIRECTORY       DB      'D:\Pieces',0h
 filehandle dw ?
 chessData db  625d dup(?);
+Filename        db      'chess.bin', 0h;
+
 .code
-callpiece PROC far
+main PROC far
 mov ax , @data ;
 mov ds , ax ;
 
+call Drawboard
+;--------------------------input data------------------------------------
+mov ax,'bb'
+mov Filename,al 
+mov Filename+1,ah
+mov ax,'b.'
+mov Filename+2,ah
+mov Filename+3,al 
+mov ax,'bi'
+mov Filename+4,ah
+mov Filename+5,al
+mov ah,'n'
+mov Filename+6,ah
+mov ah,0         
+mov Filename+7,ah
+
+;--------------------------------------------------------------
+;call callpiece
+
+;--------------------------------------------------------------
 MOV AH, 3BH
 MOV DX, OFFSET DIRECTORY
 INT 21H
@@ -53,12 +74,8 @@ call closeFile ;
 
 ;mov ah , 4ch ;
 ;int 21h;
-
-
-;hlt
-ret
-callpiece ENDP
-
+hlt
+main ENDP
 OpenFile proc
 mov ah , 3dh ;
 mov al ,0h ;
@@ -86,6 +103,6 @@ mov bx , [filehandle];
 int 21h;
 RET ;
 closeFile ENDP;
-End 
 
+End main
 

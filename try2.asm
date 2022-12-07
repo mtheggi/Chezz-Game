@@ -1,7 +1,7 @@
-extern callpiece:far
+
 extern Drawboard:far
 public Filename
-.model Small
+.model large
 .stack 64
 .data
 ;Filename db 'bbk.bin', 0h;
@@ -20,7 +20,7 @@ mov al,13h;
 int 10h;
 
 call Drawboard
-;--------------------------input data------------------------------------
+;--------------------------input BBB------------------------------------
 mov ax,'bb'
 mov Filename,al 
 mov Filename+1,ah
@@ -35,10 +35,68 @@ mov Filename+6,ah
 mov ah,0         
 mov Filename+7,ah
 
-;--------------------------------------------------------------
-;call callpiece
 
 ;--------------------------------------------------------------
+call DrawPiece
+
+
+;--------------------------input BBk------------------------------------
+
+mov ax,'bb'
+mov Filename,al 
+mov Filename+1,ah
+mov ax,'k.'
+mov Filename+2,ah
+mov Filename+3,al 
+;--------------------------------------------------------------
+mov dh, 10
+	mov dl, 25
+	mov bh, 0
+	mov ah, 2
+	int 10h
+call DrawPiece
+
+mov ah , 4ch ;
+int 21h;
+hlt
+main ENDP
+;--------------------------end main------------------------------------
+
+;--------------------------open file------------------------------------
+OpenFile proc
+mov ah , 3dh ;
+mov al ,0h ;
+LEA dx,Filename ;
+int 21h ;   
+mov [filehandle], ax;
+
+RET ;
+OpenFile ENDP ;
+
+;--------------------------read dtat------------------------------------
+ReadData proc
+mov ah , 3fh ;
+mov bx , [filehandle];
+mov cx , 625d;
+LEA dx ,chessData;
+int 21h;
+;mov ah , 3fh;
+RET;
+ReadData ENDP;
+
+;--------------------------close file------------------------------------
+closeFile proc;
+mov ah , 3eh;
+mov bx , [filehandle];
+int 21h;
+RET ;
+closeFile ENDP;
+
+
+;--------------------------Draw piece------------------------------------
+DrawPiece proc far
+
+
 MOV AH, 3BH
 MOV DX, OFFSET DIRECTORY
 INT 21H
@@ -68,41 +126,14 @@ mov ah , 0h ;
 int 16h ;
 
 call closeFile ;
-;mov ah , 0h ;
-;;mov al , 3h ;
-;int 10h ;
-
-mov ah , 4ch ;
-int 21h;
-hlt
-main ENDP
-OpenFile proc
-mov ah , 3dh ;
-mov al ,0h ;
-LEA dx,Filename ;
-int 21h ;   
-mov [filehandle], ax;
-
-RET ;
-OpenFile ENDP ;
-
-ReadData proc
-mov ah , 3fh ;
-mov bx , [filehandle];
-mov cx , 625d;
-LEA dx ,chessData;
-int 21h;
-;mov ah , 3fh;
-RET;
-ReadData ENDP;
 
 
-closeFile proc;
-mov ah , 3eh;
-mov bx , [filehandle];
-int 21h;
-RET ;
-closeFile ENDP;
+ret
+DrawPiece ENDP
+
+
+
+
 
 End main
 

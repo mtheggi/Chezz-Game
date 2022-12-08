@@ -67,8 +67,7 @@ DrawInitialState     MACRO
 
                     add sp, 4h
 
-                    inc bx
-                    cmp bx, 39h
+                    cmp bx, 03fh
                     Jnz DrawPiecesLoop
 
 
@@ -181,6 +180,7 @@ HandleFile      PROC
     PUSH DX
     push bx ; 
     CALL ReadData
+    CALL CloseFile
     pop bx;
 
     add sp, 4h

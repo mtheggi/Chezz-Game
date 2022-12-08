@@ -1,22 +1,22 @@
-;extern Filename:byte
-public callpiece
-
 .model Small
 .stack 64
 .data
-
-Filename db 'bbk.bin', 0h;
-DIRECTORY       DB      'D:\Pieces',0h
+Filename db 'bn2.bin', 0h;
+DIRECTORY       DB      'D:\ttt',0h
 filehandle dw ?
 chessData db  625d dup(?);
 .code
-callpiece PROC far
+main PROC far
 mov ax , @data ;
 mov ds , ax ;
 
 MOV AH, 3BH
 MOV DX, OFFSET DIRECTORY
 INT 21H
+
+mov ah,0;
+mov al,13h;
+int 10h;
 
 call OpenFile;
 call ReadData;
@@ -43,17 +43,16 @@ mov ah , 0h ;
 int 16h ;
 
 call closeFile ;
-;mov ah , 0h ;
-;;mov al , 3h ;
-;int 10h ;
+mov ah , 0h ;
+mov al , 3h ;
+int 10h ;
 
-;mov ah , 4ch ;
-;int 21h;
+mov ah , 4ch ;
+int 21h;
 
 
-;hlt
-ret
-callpiece ENDP
+hlt
+main ENDP
 
 OpenFile proc
 mov ah , 3dh ;
@@ -82,6 +81,6 @@ mov bx , [filehandle];
 int 21h;
 RET ;
 closeFile ENDP;
-End 
+End main
 
 

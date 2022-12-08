@@ -26,10 +26,12 @@ DrawInitialState     MACRO
     PUSH CX
     PUSH BX
     CALL HandleFile
+
     ADD SP, 6H 
 
-    mov bx, 0h
-    DrawPiecesLoop:     mov cl, Squares[bx]
+    mov bx, 0ffffh
+    DrawPiecesLoop:     inc bx; 
+                        mov cl, Squares[bx]
                         cmp cl, 0H
                         jz DrawPiecesLoop
                     mov al, 08h
@@ -37,7 +39,7 @@ DrawInitialState     MACRO
                     mov si, offset Pieces
                     add si, ax
                     mov byte ptr [si + 7], 0h
-                    ;MOV DX, OFFSET firstState
+                    ;;;MOV DX, OFFSET firstState
                     MOV CX, 271H
                     MOV DI, OFFSET chessData
                     PUSH SI
@@ -66,8 +68,10 @@ DrawInitialState     MACRO
                     add sp, 4h
 
                     inc bx
-                    cmp bx, 40h
+                    cmp bx, 39h
                     Jnz DrawPiecesLoop
+
+
 ENDM
 
 .code
@@ -149,9 +153,9 @@ ReadData PROC ; DataLoc
 mov ah , 3fh ;
 mov bx , [filehandle];
 MOV BP, SP
-mov cx , [BP+4];
+mov cx , [BP+6];
 ;LEA dx, offset chessData
-mov dx, [BP+2]; It was a trial to make it a macro but changed
+mov dx, [BP+4]; It was a trial to make it a macro but changed
 int 21h;
 ;mov ah , 3fh;
 
@@ -165,14 +169,16 @@ HandleFile      PROC
     mov dx, [BP+6]
     PUSH DX
     CALL OpenFile
-    add sp, 2h
+    add sp, 2h;
 
     MOV BP, SP
     mov dx, [BP+2]
     mov cx, [BP+4]
     push cx
     PUSH DX
+  push bx ; 
     CALL ReadData
+  pop bx;
 
     add sp, 4h
     RET

@@ -26,11 +26,11 @@ DrawInitialState     MACRO
     PUSH CX
     PUSH BX
     CALL HandleFile
+
     ADD SP, 6H 
 
-    mov bx, 0FFFFh
-    DrawPiecesLoop:     INC BX
-                        PUSH BX
+    mov bx, 0ffffh
+    DrawPiecesLoop:     inc bx; 
                         mov cl, Squares[bx]
                         cmp cl, 0H
                         jz DrawPiecesLoop
@@ -39,7 +39,7 @@ DrawInitialState     MACRO
                     mov si, offset Pieces
                     add si, ax
                     mov byte ptr [si + 7], 0h
-                    ;MOV DX, OFFSET firstState
+                    ;;;MOV DX, OFFSET firstState
                     MOV CX, 271H
                     MOV DI, OFFSET chessData
                     PUSH SI
@@ -49,7 +49,6 @@ DrawInitialState     MACRO
                     ADD SP, 6H
                     mov byte ptr [si + 7], 20h
                     
-                    POP BX
                     mov dx, 0h
                     mov ax, bx
                     mov cx, 8h
@@ -60,7 +59,6 @@ DrawInitialState     MACRO
                     mul cx
                     push ax
 
-                    PUSH BX
                     mov ax, si
                     mov cx, 19h
                     mul cx
@@ -68,9 +66,12 @@ DrawInitialState     MACRO
                     CALL DrawPiece
 
                     add sp, 4h
-                    POP BX
+
+                    inc bx
                     cmp bx, 39h
                     Jnz DrawPiecesLoop
+
+
 ENDM
 
 .code
@@ -135,12 +136,12 @@ hlt
 main ENDP
 
 ; In order for this procedure to work you have to put in DX the OFFSET of your file name variable
-OpenFile PROC FAR
+OpenFile PROC
 mov ah , 3dh ;
 mov al ,0h ;
 ;mov dx, offset boardFile
 MOV BP, SP
-mov dx, [BP]+4 ; It was a trial to make it a macro but changed
+mov dx, [BP]+2 ; It was a trial to make it a macro but changed
 int 21h ;   
 mov [filehandle], ax;
 
@@ -148,7 +149,7 @@ RET
 OpenFile ENDP
 
 ; In order for this procedure to work you have to put in DX the OFFSET of your DataLocation
-ReadData PROC FAR ; DataLoc
+ReadData PROC ; DataLoc
 mov ah , 3fh ;
 mov bx , [filehandle];
 MOV BP, SP
@@ -162,20 +163,22 @@ RET
 ReadData ENDP;
 
 ; The Procedure HandleFile wants by pushing OFFset of Filename then number of bytes, then address of writing to the stack
-HandleFile      PROC FAR
+HandleFile      PROC
     MOV BP, SP
 
-    mov dx, [BP+8]
+    mov dx, [BP+6]
     PUSH DX
     CALL OpenFile
-    add sp, 2h
+    add sp, 2h;
 
     MOV BP, SP
-    mov dx, [BP+4]
-    mov cx, [BP+6]
+    mov dx, [BP+2]
+    mov cx, [BP+4]
     push cx
     PUSH DX
+    push bx ; 
     CALL ReadData
+    pop bx;
 
     add sp, 4h
     RET
@@ -183,7 +186,6 @@ HandleFile ENDP
 
 DrawPiece     PROC  FAR ; To be noticed. May cause an error due to Jump Far
     mov bp, sp
-
     LEA si , chessData
     mov cx , 30h ; 
     ADD CX, [BP + 4] ;
@@ -211,7 +213,6 @@ DrawPiece     PROC  FAR ; To be noticed. May cause an error due to Jump Far
                     JNE piecesloop;
 
 RET
-
 DrawPiece   ENDP
 
 closeFile proc;

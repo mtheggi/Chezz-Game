@@ -8,7 +8,7 @@ filehandle dw ?
 
 Squares     DB     07h, 05h, 03h, 02h, 01h, 04h, 06h, 08h, 09h, 0ah, 0bh, 0ch, 0dh, 0eh, 0fh, 10h
             DB     32 DUP(0h)
-            DB     17h, 15h, 13h, 12h, 11h, 14h, 16h, 18h, 19h, 1ah, 1bh, 1ch, 1dh, 1eh, 1fh, 20h 
+            DB     19h, 1ah, 1bh, 1ch, 1dh, 1eh, 1fh, 20h, 17h, 15h, 13h, 12h, 11h, 14h, 16h, 18h 
 
 Pieces      DB    8h DUP(0), 0ffh DUP(0), 20h
 
@@ -124,6 +124,9 @@ int 16h ;
 DrawInitialState
 ;CALL OpenFile
 
+mov ah , 0h ;
+int 16h ;
+
 ;mov ah , 0h ;
 ;mov al , 3h ;
 ;int 10h ;
@@ -202,12 +205,15 @@ DrawPiece     PROC  FAR ; To be noticed. May cause an error due to Jump Far
     
     piecesloop :
                     mov al ,[si] ;
+                    cmp al, 06h
+                    jz NODRAW
                     int 10h;
-                    inc cx;
+                    NODRAW: inc cx;
                     inc si;
                     cmp cx , [countX];
                     JNE piecesloop ;
                     mov cx , [bp+4] ;
+                    add cx, 30h
                     inc dx ;
                     cmp dx, [countY];
                     JNE piecesloop;

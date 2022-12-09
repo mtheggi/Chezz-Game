@@ -15,7 +15,7 @@ Pieces      DB    8h DUP(0), 0ffh DUP(0), 20h
 countX      DW    ?
 countY      DW    ?
 
-chosenSquare    db     03CH
+chosenSquare    db     3cH
 chosenSquareColor   DB  ?
 rowX            DW      ?
 rowY            DW      ?
@@ -295,6 +295,7 @@ SquaresCalculation  PROC
     mov dx, 0h
     mov cx, 19h
     mul cx
+    inc ax
     mov [rowX], ax
     mov ax, si
     mov cx, 19h
@@ -308,9 +309,9 @@ SquaresCalculation  ENDP
 GetSquareColor      PROC
     mov ah, 0dh
     mov bh, 0h
-    mov cx, [rowX]
-    add cx, 2h
-    mov dx, [rowY]
+    mov cx, [rowY]
+    add cx, 32h
+    mov dx, [rowX]
     add dx, 2h
     int 10h
     MOV [chosenSquareColor], al

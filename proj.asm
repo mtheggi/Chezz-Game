@@ -15,6 +15,11 @@ Pieces      DB    8h DUP(0), 0ffh DUP(0), 20h
 countX      DW    ?
 countY      DW    ?
 
+chosenSquare    db     03CH
+chosenSquareColor   DB  ?
+rowX            DW      ?
+rowY            DW      ?
+
 chessData db  9C40h dup(?);
 
 
@@ -49,20 +54,13 @@ DrawInitialState     MACRO
                     ADD SP, 6H
                     mov byte ptr [si + 7], 20h
                     
-                    mov dx, 0h
-                    mov ax, bx
-                    mov cx, 8h
-                    div cx
-                    mov si, dx
-                    mov dx, 0h
-                    mov cx, 19h
-                    mul cx
-                    push ax
-
-                    mov ax, si
-                    mov cx, 19h
-                    mul cx
-                    push ax
+                    PUSH BX
+                    CALL SquaresCalculation
+                    ADD SP, 2H
+                    MOV dx, [rowX]
+                    PUSH dx
+                    mov dx, [rowY]
+                    push dx
                     CALL DrawPiece
 
                     add sp, 4h
@@ -121,10 +119,39 @@ mov ah , 0h ;
 int 16h ;
 
 DrawInitialState
-;CALL OpenFile
 
 mov ah , 0h ;
 int 16h ;
+
+mov cl, [chosenSquare]
+mov ch, 0h
+PUSH CX
+CALL SquaresCalculation
+add sp, 2h
+
+CALL GetSquareColor
+mov dl, [chosenSquareColor]
+mov dh, 0h
+
+GAME:     cmp dx, 35h
+          jnz flashColor
+          mov al, [chosenSquareColor]
+          mov ah, 0ch
+          jmp flashing
+          flashColor:   mov ax, 0c35h
+          flashing: PUSH DX
+                    PUSH AX
+                    CALL DrawSquare
+                    MOV CX, 6H
+                    MOV DX, 0F000H
+                    MOV AH, 86H
+                    INT 15H
+                    pop dx
+                    sub dx, 0c00h
+                    add sp, 2h
+                    JMP GAME
+         
+                    
 
 ;mov ah , 0h ;
 ;mov al , 3h ;
@@ -220,6 +247,76 @@ DrawPiece     PROC  FAR ; To be noticed. May cause an error due to Jump Far
 
 RET
 DrawPiece   ENDP
+
+DrawSquare      PROC
+    mov bp, sp
+    mov si, [bp+4]
+    mov di, [bp+2]
+    
+    mov cx, [rowY]
+    mov dx, [rowX]
+    add cx, 48H
+    add dx, 18h
+    mov bp, [rowY]
+    ADD BP, 2FH
+
+    StartDrawing: mov ah, 0dh
+    mov bh, 0h
+    int 10h
+
+    mov ah, 0h
+    cmp si, ax
+    jnz proceed
+    mov ax, di
+    int 10h
+    proceed: dec cx
+             cmp cx, bp
+             jnz StartDrawing
+             mov cx, bp
+             add cx, 19h
+             dec dx
+             mov ax, [rowX]
+             dec ax
+             cmp dx, ax
+             jnz StartDrawing
+
+
+    RET
+DrawSquare  ENDP
+
+SquaresCalculation  PROC
+    mov bp, sp
+
+    mov dx, 0h
+    mov ax, [bp+2]
+    mov cx, 8h
+    div cx
+    mov si, dx
+    mov dx, 0h
+    mov cx, 19h
+    mul cx
+    mov [rowX], ax
+    mov ax, si
+    mov cx, 19h
+    mul cx
+    inc ax
+    mov [rowY], ax
+
+    RET
+SquaresCalculation  ENDP
+
+GetSquareColor      PROC
+    mov ah, 0dh
+    mov bh, 0h
+    mov cx, [rowX]
+    add cx, 2h
+    mov dx, [rowY]
+    add dx, 2h
+    int 10h
+    MOV [chosenSquareColor], al
+
+    RET
+GetSquareColor ENDP
 
 closeFile proc;
 mov ah , 3eh;

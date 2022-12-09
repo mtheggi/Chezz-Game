@@ -1,5 +1,3 @@
-;; Osama Nasser         20/11/2022
-;; take the user input for his/her name
 
 .model small
 .stack 64
@@ -54,5 +52,3 @@ main proc far
 main ENDP
 end main
            
-          ;; we should check the input string to determine if it satisfy the condition and if the condition is false then re-enter the username
-          ;; is there a way to ckeck limit the input string  

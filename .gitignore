@@ -2,6 +2,7 @@
 *.EXE
 *.MAP
 *.TD
-./Pieces/*.bak
-./randomTrials/*
-./imgsForChess/*
+/Pieces/*.bak
+/randomTrials/*
+/imgsForChess/*
+/msa/*

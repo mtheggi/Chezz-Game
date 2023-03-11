@@ -3,3 +3,5 @@
 *.MAP
 *.TD
 ../Pieces/*.bak
+../randomTrials 
+../imgsForChess
